@@ -1,0 +1,251 @@
+Finding Bad Needles in Worldwide Haystacks
+(Go & web security scanning)
+01 Feb 2015
+Tags: golang, web application security
+
+Dmitry Savintsev
+Paranoid, Yahoo!
+https://github.com/dmitris
+@dimisec
+
+* Who I am
+
+Security Engineer at Yahoo! (Paranoid Labs)
+
+C++, Perl, PHP, Python, NodeJS, *Go*
+
+.image ../gopher-purple.png
+
+* Overview
+
+- Web Security domain and Go
+- Webseclab - toolkit for security scanners and tests
+- Contextdetect and XSS scanner
+- Go and a large-scale CD
+- Next Steps 
+
+* Web Application Security
+
+- specialized Q&A
+- enabling development (+ consulting / training)
+- automation is paramount at scale
+- tools at the core (often custom)
+
+* Go for tools development
+
+- easy deployment with static libraries, no dependency hell
+- no "undefined function" runtime errors
+- dev friendly: build chain, explicit deps, gofmt / *goimports*, docs
+- test facilities are "right there"
+
+* Go for building web security tools
+
+- http / network batteries included
+- concurrency & performance 
+- Web GUI or webservice wrapper with net/http
+- abstraction "elevator" - allows to move to lower levels when needed
+
+* Dead Link Crawler
+
+- learning project web crawler (for the specific site)
+- study for a web security scanner
+- specific test task - finding dead links
+
+* Dead Link Crawler Results
+
+- was able to plow through thousands of Yahoo sites
+- found number of bad links => better user experience!
+- colleagues were excited
+- was running stable with 100 concurrent jobs on a single machine
+- memory consumption around 3GB
+
+* Dead Link Crawler Lessons
+- *r.Body.Close()*
+- ulimit
+- number of DNS errors increases past 200+ "threads"
+
+* Webseclab
+
+* Webseclab
+- site for testing security scanners
+<<<<<<< HEAD
+- toolkit for construcing new tests / cases
+=======
+- toolkit for construcing new tests /cases
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+- replication of real use cases (BugBounty, stage/prod)
+
+* Webseclab Requirements
+- 80/20: standard vs. "special" cases
+- standard: input -> output with no or wrong filtering
+- "badness" must be tightly controlled (test isolation)
+<<<<<<< HEAD
+- "special" cases: HTTP Response Spliting, Referer Injection etc.
+=======
+- "special": HTTP Response Spliting, Referer Injection etc.
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+
+* Webseclab in Go
+- input come as the "in" cgi var in the URL
+- except special cases like headers injection
+- filter converts the input value, set output structure
+
+* Conventions
+- if URL path ends with .ok, turn off badness
+<<<<<<< HEAD
+- URL path ends with _fp = False Positive case
+=======
+- URL path ends with _fp = False Positive cases
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+
+* Webseclab Internals
+- special purpose web mini-framework
+- Go templates (text/template)
+- "library" for input [mis]filtering
+- composition of standard filter blocks:
+
+TagsOff, DoubleQuotesOff, SpacesOff etc.
+
+* Webseclab standard filters
+.code filter.go
+
+* Custom input processing
+.code transform.go
+
+
+* Replicating Badness
+- Quick addition of cases (paste template, set filters)
+- Allows to see the issue in the realistic setting, HTML et al.
+
+* Resurrecting Badness
+<<<<<<< HEAD
+- bring out to life issues that are already fixed
+- based on the HTML / network dumps done by Incident Response
+=======
+- bring out to life issues that are alread fised
+- based on the HTML / network dumps dones by Incident Responce
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+
+* Webseclab Demo
+
+
+* Open Source!
+
+<<<<<<< HEAD
+.link https://github.com/yahoo/webseclab
+
+To install:
+=======
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+go get github.com/yahoo/webseclab/...
+
+* Contextdetect
+
+* Scanner Analysis Engine
+*Before*
+- regexps and custom scripting
+<<<<<<< HEAD
+- fragile, hard to understand and improve
+- bouts of False Positives and False Negatives
+
+* Go for HTML5 parser
+- use Go-based parsers for analysis 
+- net/html HTML5 parser
+- define HTML context of injections
+
+.link http://godoc.org/golang.org/x/
+
+=======
+- fragile, hard to understand and iprove
+- bouts of False Positives and False Negatives
+
+* Go for HTML5 parser
+- use Go-based parsers for analysis
+- net/html HTML5 parser
+- define HTML context of injections
+
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+* Contextdetect & Javascript
+- robertkrimen/otto - JS parser
+- checking whether injections breaks JS
+
+<<<<<<< HEAD
+.link http://godoc.org/github.com/robertkrimen/otto
+
+=======
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+* JS validation
+.code checkjs.go
+
+* Contextdetect Results
+<<<<<<< HEAD
+- reduced False Positives to near-zero
+=======
+- reduced FPs to near-zero
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+- still finding real issues
+- improved output: display relevant parts
+
+* Other Go pieces
+
+- distributed system with Web Service interface
+- multiple redundant "workers" that do actual scanning
+
+* Scantest
+- functional test of the scanning system
+- "go test" for functional testing?
+- very convenient!
+
+
+<<<<<<< HEAD
+* Dependency management idea
+- must "pin" [3rd party] dependencies
+- would like to limit my repository to my code (not all the deps underneath)
+- willing to compromise on the Go's "no config files" ideal
+=======
+* Dependency Management Idea
+- must "pin" [3rd party] dependencies
+- would like to limit my repository to my code (not all the deps underneath)
+- willing to compromise on the "no config files" ideal
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+
+* REPO
+- Android REPO 
+- requires a manifest (default.xml)
+- fetches the whole project
+- can layout the workspace
+- can map repos to path
+
+<<<<<<< HEAD
+.link https://source.android.com/source/downloading.html
+
+=======
+>>>>>>> 21fdb15eed6cfd0dbf7f6314c42bd67ac5fbe6b0
+* REPO and Go
+- used for a few months
+- default.xml is "at a glance" documentation / visualization of deps
+
+* REPO in CD
+- rebuild on dependencies change
+- very useful!
+
+* REPO ideas
+- incomplete manifest - only "pinning" project entries
+- generate automatically using "go list"
+- automatically filled in by the CD system
+
+* Next Steps
+- expand the contextdetect module
+- complete the full Go scanner
+- share it with web security community
+- publish the dead link scanner
+
+* Conclusion
+- Go is excellent foundation for building security tools 
+- Lots of room for innovation
+- Big potential on the intersection of Go and Webappsec
+
+* Credits
+
+The Purple Gopher is based on the work created and shared by [[http://www.reneefrench.com][Renée French]] and used according to terms described in the Creative Commons 3.0 Attribution License.
+

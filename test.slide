@@ -1,28 +1,9 @@
-* Container Technology for Enterprise
+Container Technology for Enterprise
+(CoreOS, OpenShift and Custom Solution)
+13 Oct 2015
 
-some text
+Kunal Kushwaha
+https://github.com/kunalkushwaha
+@kunalkushwaha
 
-** Subsection
 
-- bullets
-- more bullets
-- a bullet with
-
-*** Sub-subsection
-
-Some More text
-
-  Preformatted text
-    is indented (however you like)
-
-    Further Text, including invocations like:
-
-    .code x.go /^func main/,/^}/
-    .play y.go
-    .image image.jpg
-    .iframe http://foo
-    .link http://foo label
-    .html file.html
-    .caption _Gopher_ by [[http://www.reneefrench.com][Renée French]]
-
-    Again, more text
